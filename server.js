@@ -1,13 +1,15 @@
+require('dotenv').config()
+
 import { ApolloServer } from 'apollo-server';
-
-import { typeDefs, resolvers } from './schema';
-
+import { typeDefs, resolvers } from './schema/index';
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Apollo server is running on ${url} 🚀`);
-});
+const PORT = process.env.PORT;
+server
+  .listen(PORT)
+  .then(() => console.log(`🚀 Apollo server is running on ${PORT} 🚀`));
+  
