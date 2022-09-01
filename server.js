@@ -1,35 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import { ApolloServer, gql } from 'apollo-server';
+import { ApolloServer } from 'apollo-server';
 
-//import client from './client';
-const client = new PrismaClient();
+import { typeDefs, resolvers } from './schema';
 
-const typeDefs = gql`
-  type User {
-    id: Int!
-    name: String!
-    createdAt: String!
-    updateAt: String
-  }
-  type Query {
-    users: [User],
-    user: User,
-  }
-  type Mutation {
-    createUser(name: String!): User
-  }
-`;
-
-const resolvers = {
-  Query: {
-    users: () => client.user.findMany(),
-    user: () => ({ id: 1, name: 'iamhwang' }),
-  },
-
-  Mutation: {
-    createUser: (_, { name }) => client.user.create({ data: { name }})
-  }
-};
 
 const server = new ApolloServer({
   typeDefs,
