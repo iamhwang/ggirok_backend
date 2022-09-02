@@ -6,6 +6,7 @@ export const resolvers = {
   Query: {
     users: () => client.user.findMany(),
     user: () => ({ id: 1, name: 'iamhwang' }),
+    seeUser: async (_, { username }) => await client.user.findUnique({ where: { username }})
   },
 
   Mutation: {
@@ -53,6 +54,6 @@ export const resolvers = {
         status: true,
         token,
       }
-    }
+    },
   }
 };
