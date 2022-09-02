@@ -3,28 +3,7 @@ import bycrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 
 export const resolvers = {
-  Query: {
-    users: () => client.user.findMany(),
-    user: () => ({ id: 1, name: 'iamhwang' }),
-    seeUser: async (_, { username }) => await client.user.findUnique({ where: { username }})
-  },
-
   Mutation: {
-    createUser: async (_, { userId, username, password }) => {
-      try {
-        const checkUniqueUser = await client.user.findFirst({ where : { 
-          OR: [{ userId }, { username }]
-        }})   
-        if(checkUniqueUser) {
-          throw new Error("중복된 사용자입니다.")
-        }
-  
-        const hashPassword = await bycrypt.hash(password, 10);
-        return client.user.create({ data: { userId, username, password: hashPassword }})
-      } catch(e) {
-        return e;
-      }
-    },
     loginUser: async (_, { userId, password }) => {
       const user = await client.user.findUnique({ where: { userId }});
       if(!user) {
