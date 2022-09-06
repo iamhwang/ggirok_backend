@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import client from '../client';
 
-export default async function getUser({ token }) {
+export async function getUser({ token }) {
   try {
     if (!token) { return null; }
 
@@ -13,4 +13,14 @@ export default async function getUser({ token }) {
   } catch {
     return null;
   }
+}
+
+export const checkLoggedInUserToken = (resolvers) => (root, args, context, info) => {
+  if (!context.loggedInUser) {
+    return {
+      status: false,
+      error: "로그인 정보를 찾을 수 없습니다.",
+    };
+  }
+  return resolvers(root, args, context, info);
 }
