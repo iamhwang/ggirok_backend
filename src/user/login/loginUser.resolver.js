@@ -25,7 +25,7 @@ export const resolvers = {
       const privateKey = process.env.PRIVATE_KEY;
       const options = {
         algorithm : "HS256", // 해싱 알고리즘
-        expiresIn : "30m",  // 토큰 유효 기간
+        expiresIn : "600m",  // 토큰 유효 기간
         issuer : "ggirok" // 발행자
       }
       const token = await jwt.sign(payload, privateKey, options);
