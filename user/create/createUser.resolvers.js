@@ -1,24 +1,25 @@
-import client from "../client";
+import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
+
+import client from "../../client";
 
 export default {
   Mutation: {
-    createAccount: async (_, { name, email, password }) => {
+    createUser: async (_, { name, email, password }) => {
       const existingUser = await client.user.findFirst({
         where: { OR: [{ name }, { email }] },
       });
-      console.log(existingUser);
       
-      //
       // 비밀번호 암호화
+      const hashPassword = await bcrypt.hash(password, 10);
 
       return client.user.create({
         data: {
           name,
           email,
-          password,
+          password: hashPassword,
         },
       });
-
     },
   },
 };
