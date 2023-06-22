@@ -10,7 +10,6 @@ export default gql`
     editUser(
       email: String!
       password: String!
-      token: String!
     ): editUserResult
   }
 `;

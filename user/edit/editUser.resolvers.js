@@ -5,26 +5,23 @@ import client from "../../client";
 
 export default {
   Mutation: {
-    editUser: async (_, { email, password: newPassword, token }) => {
-      // 사용자 체크
-      const { id } = await jwt.verify(token, process.env.SECRET_KEY);
-
-      console.log(id);
-      
+    editUser: async (_, { email, password: newPassword }, { user }) => {
+      // 변경할 비밀번호 암호화
       let hashPassword = null;
       if (newPassword) {
         hashPassword = await bcrypt.hash(newPassword, 10);
       }
 
+      console.log(user)
+
+      // 사용자 정보 변경
       const updatedUser = await client.user.update({
-        where: { id },
+        where: { id: user.id },
         data: {
           email,
           ...(hashPassword && { password: hashPassword }),
         },
       });
-
-      console.log(updatedUser)
 
       if (updatedUser.id) {
         return {
